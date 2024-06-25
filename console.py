@@ -119,7 +119,6 @@ class HBNBCommand(cmd.Cmd):
         i = 1
         new_args = args.split(" ")
         class_name = new_args[0]
-        """ Create an object of any class"""
         if not new_args[0]:
             print(" class name missing ")
             return
