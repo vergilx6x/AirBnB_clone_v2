@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 
 class FileStorage:
@@ -8,9 +17,18 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        if cls == None:
+            return FileStorage.__objects
+        
+        else:
+            new_dict = {}
+            for k, v in self.__objects.items():
+                if isinstance(v, cls):
+                    new_dict[k] = v
+            return new_dict
+        
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -25,15 +43,19 @@ class FileStorage:
                 temp[key] = val.to_dict()
             json.dump(temp, f)
 
+    def delete(self, obj=None):
+
+        if obj == None:
+            pass
+
+        obj_to_delete = f"{obj.__class__.__name__}.{obj.id}"
+        
+        # Delete the object from the dictionary if the key exists
+        if obj_to_delete in self.__objects:
+            del self.__objects[obj_to_delete]
+
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -42,7 +64,10 @@ class FileStorage:
                   }
         try:
             temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
+            with open(FileStorage.__file_path, 'r', encoding="UTF-8") as f:
+                if not f.read().strip():
+                    return
+                f.seek(0)
                 temp = json.load(f)
                 for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
