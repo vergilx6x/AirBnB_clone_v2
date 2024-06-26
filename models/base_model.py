@@ -11,7 +11,7 @@ Base = declarative_base()
 
 class BaseModel:
 
-    id = Column(String(60), unique=True, primary_key=True ,nullable=False)
+    id = Column(String(60), unique=True, primary_key=True, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
@@ -22,7 +22,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            
+
         elif kwargs:
             for k, v in kwargs.items():
                 if k in {"created_at", "updated_at"}:
@@ -34,7 +34,6 @@ class BaseModel:
                 for k in ["created_at", "updated_at"]:
                     if k not in kwargs:
                         setattr(self, k, datetime.now())
-
 
     def __str__(self):
         """Returns a string representation of the instance"""

@@ -11,7 +11,7 @@ import shlex
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
-        name: input name
+        name.
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
@@ -20,15 +20,15 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        var = models.storage.all()
-        lista = []
+        models = models.storage.all()
+        list_cities = []
         result = []
-        for key in var:
+        for key in models:
             city = key.replace('.', ' ')
             city = shlex.split(city)
             if (city[0] == 'City'):
-                lista.append(var[key])
-        for elem in lista:
-            if (elem.state_id == self.id):
-                result.append(elem)
+                list_cities.append(models[key])
+        for obj in list_cities:
+            if (obj.state_id == self.id):
+                result.append(obj)
         return (result)

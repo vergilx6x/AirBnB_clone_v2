@@ -118,7 +118,6 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-
     def do_create(self, args):
         """ Create an object of any class"""
         try:
@@ -130,7 +129,9 @@ class HBNBCommand(cmd.Cmd):
                 arg_splited = arg.split("=")
                 arg_splited[1] = eval(arg_splited[1])
                 if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
+                    arg_splited[1] = (
+                            arg_splited[1].replace("_", " ")
+                            .replace('"', '\\"'))
                 kw[arg_splited[0]] = arg_splited[1]
         except SyntaxError:
             print("** class name missing **")
@@ -139,7 +140,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         new_instance.save()
         print(new_instance.id)
-
 
     def help_create(self):
         """ Help information for the create method """
@@ -332,6 +332,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

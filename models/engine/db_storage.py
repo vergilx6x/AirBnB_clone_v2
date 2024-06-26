@@ -19,7 +19,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        
+
         user = getenv("HBNB_MYSQL_USER")
         passwd = getenv("HBNB_MYSQL_PWD")
         db = getenv("HBNB_MYSQL_DB")
@@ -36,7 +36,7 @@ class DBStorage:
     def all(self, cls=None):
         """returns a dictionary
         Return:
-            returns a dictionary of __object
+            returns a dictionary of a specefic object
         """
         dic = {}
         if cls:
@@ -61,18 +61,18 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
-        """save changes
+        """saves changes
         """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete an element in the table
+        """deletes an element from the table
         """
         if obj:
             self.session.delete(obj)
 
     def reload(self):
-        """configuration
+        """Configuring the databse
         """
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -80,6 +80,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """ calls remove()
+        """ closes the session
         """
         self.__session.close()
