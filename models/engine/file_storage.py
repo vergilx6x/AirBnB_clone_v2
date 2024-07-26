@@ -50,6 +50,11 @@ class FileStorage:
         del self.__objects[key]
         self.save()
 
+    def close(self):
+        """ Calls reload """
+
+        self.reload()
+
     def reload(self):
         """Loads storage dictionary from file"""
 
